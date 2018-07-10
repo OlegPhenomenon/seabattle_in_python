@@ -80,7 +80,4 @@ class Man(Ships):
         
         return self.enemy_field
 
-    def display(self, field):
-        super().display(field)
-
 

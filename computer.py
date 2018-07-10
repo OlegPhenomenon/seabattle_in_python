@@ -139,13 +139,12 @@ class Computer(Ships):
             if self.enemy_field[x][y] == ' ':
                 self.enemy_field[x][y] = 'x'
                 break
-            elif self.enemy_field[x][y] == '#':
-                self.enemy_field[x][y] = '@'
             elif self.enemy_field[x][y] == '+':
                 self.enemy_field[x][y] = 'x'
+                break
             elif self.enemy_field[x][y] == '@':
                 self.enemy_field[x][y] = '@'
+                break
+            elif self.enemy_field[x][y] == '#':
+                self.enemy_field[x][y] = '@'
         return self.enemy_field
-
-    def computer_display(self, field):
-        super().display(field)

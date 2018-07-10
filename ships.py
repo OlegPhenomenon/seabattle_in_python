@@ -9,7 +9,7 @@ class Ships(Field):
         #super().__init__()
         self.field = field
         self.MARK = '#'
-        self.MARK2 = '+'
+        self.MARK2 = '.'
 
     #помечаем область вокруг корабля
     def mark_around_ship(self, field):
@@ -51,23 +51,30 @@ class Ships(Field):
         self.flag = False
         while not self.flag:
             if self.x < 0:
-                print('Incorrect range')
+                print('Неверный индекс')
                 return self.flag
             elif self.x > 9:
-                print('Incorrect range')
+                print('Неверный индекс')
                 return self.flag
             elif self.y < 0:
-                print('Incorrect range')
+                print('Неверный индекс')
                 return self.flag
             elif self.y > 9:
-                print('Incorrect range')
+                print('Неверный индекс')
                 return self.flag
             else:
                 self.flag = True
         return self.flag
     #проверка
     def checks(self, x, y):
-        if self.field[x][y] == self.MARK or self.field[x][y] == self.MARK2:
+        if self.field[x][y] == ' ':
+            return True
+        return False
+
+
+    def new_checks_temp(self, x, y):
+        if self.field[x][y] == '#' or self.field[x][y] == self.MARK2:
+            print('Вы пытаетесь построить корабль поверх другого или близко к нему')
             return False
         return True
 
@@ -94,29 +101,44 @@ class Ships(Field):
         self.flag = True #Флаг корректной ячейке
         self.flag2 = True #Флаг целостности корабля
         self.flag3 = True #Флаг корректности ячейке 3
+        self.flag4 = True #Флаг повверх ли строится корабль?
         while self.i<1: #тут вставим первую палубу произведя необходимые проверки
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y) #в "нормальной" ли ячейче?!
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y) #если все хорошо разместим в field[x][y]
                 self.i += 1     #увеличим инкремент, чтобы выйти из цикла
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         #тут мы будет размещать дальнейшие палубы, есдинственное, что 
         #добавил, это проверку на целостность корабля
         while self.i < 4:   
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y)
             self.flag2 = self.line_ship(self.x, self.y) #проверка на целостность
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag2 == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag2 == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y)
                 self.i += 1
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         return self.field
 
      #разместить 3ех палубный корабль
@@ -125,29 +147,44 @@ class Ships(Field):
         self.flag = True #Флаг корректной ячейке
         self.flag2 = True #Флаг целостности корабля
         self.flag3 = True #Флаг корректности ячейке 3
+        self.flag4 = True
         while self.i<1: #тут вставим первую палубу произведя необходимые проверки
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y) #в "нормальной" ли ячейче?!
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y) #если все хорошо разместим в field[x][y]
                 self.i += 1     #увеличим инкремент, чтобы выйти из цикла
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         #тут мы будет размещать дальнейшие палубы, есдинственное, что 
         #добавил, это проверку на целостность корабля
         while self.i < 3:   
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y)
             self.flag2 = self.line_ship(self.x, self.y) #проверка на целостность
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag2 == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag2 == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y)
                 self.i += 1
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         return self.field
 
      #разместить 2ух палубный корабль
@@ -156,29 +193,44 @@ class Ships(Field):
         self.flag = True #Флаг корректной ячейке
         self.flag2 = True #Флаг целостности корабля
         self.flag3 = True #Флаг корректности ячейке 3
+        self.flag4 = True
         while self.i<1: #тут вставим первую палубу произведя необходимые проверки
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y) #в "нормальной" ли ячейче?!
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y) #если все хорошо разместим в field[x][y]
                 self.i += 1     #увеличим инкремент, чтобы выйти из цикла
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         #тут мы будет размещать дальнейшие палубы, есдинственное, что 
         #добавил, это проверку на целостность корабля
         while self.i < 2:   
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y)
             self.flag2 = self.line_ship(self.x, self.y) #проверка на целостность
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag2 == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag2 == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y)
                 self.i += 1
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         return self.field
 
      #разместить одно- палубный корабль
@@ -187,22 +239,24 @@ class Ships(Field):
         self.flag = True #Флаг корректной ячейке
         self.flag2 = True #Флаг целостности корабля
         self.flag3 = True #Флаг корректности ячейке 3
+        self.flag4 = True
         while self.i<1: #тут вставим первую палубу произведя необходимые проверки
             self.x = int(input('x: '))
             self.y = int(input('y: '))
+            if self.x < 0 or self.x > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
+            if self.y < 0 or self.y > 9:
+                print('Цифра выходит за пределы поля. Введите вновь координаты от 0 до 9.')
+                continue
             self.flag = self.checks(self.x, self.y) #в "нормальной" ли ячейче?!
             self.flag3 = self.check_cell(self.x, self.y)
-            if self.flag == True and self.flag3 == True:
+            self.flag4 = self.new_checks_temp(self.x, self.y)
+            if self.flag == True and self.flag3 == True and self.flag4 == True:
                 self.field = self.replace(self.x, self.y) #если все хорошо разместим в field[x][y]
                 self.i += 1     #увеличим инкремент, чтобы выйти из цикла
             else:
-                print('Incorrect. Try again')
+                print('Неправильно. Попробуйте еще раз')
         return self.field
 
-    
-    #отображаем поле#
-    def display(self, field):
-        for items in self.field:
-            print(items)
-        print("\n\n")
     
